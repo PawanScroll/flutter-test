@@ -16,7 +16,7 @@ class _PostTileState extends State<PostTile> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.go('/post/${widget.post.id}');
+        context.push('/post/${widget.post.id}');
       },
       child: SizedBox(
         height: 500,

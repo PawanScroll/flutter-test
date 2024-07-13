@@ -18,11 +18,9 @@ class SiteContent with ChangeNotifier, DiagnosticableTreeMixin {
     try {
       isLoading = true;
       var resp = await dio.get('/api/r/2/posts?ptype=blog');
-
       posts = (resp.data as List<dynamic>)
           .map((post) => Post.fromJson(post as Map<String, dynamic>))
           .toList();
-
     } catch (err) {
       isError = true;
     } finally {
