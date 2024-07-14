@@ -14,9 +14,9 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.handyman),
+        leading: const Icon(Icons.handyman),
         backgroundColor: Colors.amber,
-
+        title: const Text('Under construction'),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [

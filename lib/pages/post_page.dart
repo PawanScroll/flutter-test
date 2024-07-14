@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
@@ -52,7 +53,8 @@ class _PostContainerState extends State<PostContainer> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ActivePost>(context, listen: false).getPost(widget.siteId ?? 1, widget.id ?? 1);
+      Provider.of<ActivePost>(context, listen: false)
+          .getPost(widget.siteId ?? 1, widget.id ?? 1);
     });
   }
 
@@ -60,55 +62,52 @@ class _PostContainerState extends State<PostContainer> {
   Widget build(BuildContext context) {
     return Consumer<ActivePost>(
       builder: (context, activePost, child) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 50),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                // Top section
-                const PostHeader(),
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              // Top section
+              const PostHeader(),
 
-                // Content section
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: HtmlWidget(
-                    activePost.post?.content ?? '',
-                  ),
+              // Content section
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: HtmlWidget(
+                  activePost.post?.content ?? '',
                 ),
+              ),
 
-                // Bottom section
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.favorite_border),
-                          const SizedBox(width: 4),
-                          Text('${activePost.post?.likes ?? 0}'),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Icon(Icons.comment),
-                          const SizedBox(width: 4),
-                          Text('${activePost.post?.commentsCount ?? 0}'),
-                        ],
-                      ),
-                      const Row(
-                        children: [
-                          Icon(Icons.share),
-                          SizedBox(width: 4),
-                          Text('Share'),
-                        ],
-                      ),
-                      const Icon(Icons.more_vert),
-                    ],
-                  ),
+              // Bottom section
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.favorite_border),
+                        const SizedBox(width: 4),
+                        Text('${activePost.post?.likes ?? 0}'),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Icon(Icons.comment),
+                        const SizedBox(width: 4),
+                        Text('${activePost.post?.commentsCount ?? 0}'),
+                      ],
+                    ),
+                    const Row(
+                      children: [
+                        Icon(Icons.share),
+                        SizedBox(width: 4),
+                        Text('Share'),
+                      ],
+                    ),
+                    const Icon(Icons.more_vert),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
@@ -128,33 +127,48 @@ class _PostHeaderState extends State<PostHeader> {
   Widget build(BuildContext context) {
     return Consumer<ActivePost>(
       builder: (context, activePost, child) {
-        return Column(
-          children: [
-            SizedBox(
-              child: Text(
+        final publishedDate = activePost.post?.published != null
+            ? DateFormat('dd MMM, yyyy')
+                .format(DateTime.parse(activePost.post!.published))
+            : '';
+        return Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
                 activePost.post?.title ?? '',
-                style: const TextStyle(fontSize: 48),
+                style: const TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            ListTile(
-              // leading: CircleAvatar(
-              //   backgroundImage: NetworkImage(
-              //     activePost.post?.author.avatar.fallback ?? '',
-              //   ),
-              // ),
-              title: Text(activePost.post?.author.name ?? ''),
-              subtitle: Text(activePost.post?.author.bio ?? ''),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.more_vert),
-                    onPressed: () {},
+              const SizedBox(height: 8),
+              Text(
+                publishedDate,
+                style: const TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+              const Divider(height: 20, thickness: 1),
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    activePost.post?.author.avatar['fallback'] ?? '',
                   ),
-                ],
+                ),
+                title: Text(activePost.post?.author.name ?? ''),
+                subtitle: Text(activePost.post?.author.bio ?? ''),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.more_vert),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
