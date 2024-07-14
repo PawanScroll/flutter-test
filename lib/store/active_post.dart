@@ -14,10 +14,10 @@ class ActivePost with ChangeNotifier, DiagnosticableTreeMixin {
 
   Dio dio = Dio(options);
 
-  Future<void> getPost(int id) async {
+  Future<void> getPost(int siteId, int id) async {
     try {
       isLoading = true;
-      var resp = await dio.get('/api/r/2/posts/$id');
+      var resp = await dio.get('/api/r/$siteId/posts/$id');
 
       post = Post.fromJson(resp.data);
 

@@ -6,9 +6,10 @@ import 'package:stck_site/store/active_post.dart';
 import 'package:stck_site/scaffolds/base_scaffold.dart';
 
 class PostPage extends StatefulWidget {
-  const PostPage({super.key, required this.id});
-
   final int? id;
+  final int? siteId;
+
+  const PostPage({super.key, required this.id, required this.siteId});
 
   @override
   State<PostPage> createState() => _PostPageState();
@@ -24,6 +25,7 @@ class _PostPageState extends State<PostPage> {
           child: widget.id != null
               ? PostContainer(
                   id: widget.id,
+                  siteId: widget.siteId,
                 )
               : const Text(
                   '404',
@@ -36,9 +38,10 @@ class _PostPageState extends State<PostPage> {
 }
 
 class PostContainer extends StatefulWidget {
-  const PostContainer({super.key, required this.id});
-
   final int? id;
+  final int? siteId;
+
+  const PostContainer({super.key, required this.id, required this.siteId});
 
   @override
   State<PostContainer> createState() => _PostContainerState();
@@ -49,7 +52,7 @@ class _PostContainerState extends State<PostContainer> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ActivePost>(context, listen: false).getPost(widget.id ?? 0);
+      Provider.of<ActivePost>(context, listen: false).getPost(widget.siteId ?? 1, widget.id ?? 1);
     });
   }
 

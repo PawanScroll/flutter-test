@@ -25,10 +25,6 @@ class _BaseScaffoldState extends State<BaseScaffold> {
             label: 'Back',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.search_sharp),
             label: 'Search'
           )
@@ -37,9 +33,6 @@ class _BaseScaffoldState extends State<BaseScaffold> {
           switch (index) {
             case 0:
               context.pop();
-              break;
-            case 1:
-              context.push('/home');
               break;
             case 2:
               context.push('/');

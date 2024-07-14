@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:stck_site/scaffolds/base_scaffold.dart';
 
 import 'package:stck_site/store/site_content.dart';
+import 'package:stck_site/store/active_site.dart';
 import 'package:stck_site/components/post_tile.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -16,8 +17,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      body: ChangeNotifierProvider(
-        create: (context) => SiteContent(),
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => SiteContent()),
+        ],
         child: const PostsList(),
       ),
     );
@@ -38,24 +41,31 @@ class _PostsListState extends State<PostsList> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final siteContentStore = Provider.of<SiteContent>(context, listen: false);
-      if (siteContentStore.posts.isEmpty) {
-        siteContentStore.getPosts();
-      }
+      final activeSiteStore = Provider.of<ActiveSite>(context, listen: false);
+
+      siteContentStore.getPosts(activeSiteStore.site?.id ?? 1);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SiteContent>(
-      builder: (context, siteContent, child) {
+    return Consumer2<SiteContent, ActiveSite>(
+      builder: (context, siteContent, activeSite, child) {
         return siteContent.isLoading
             ? const Center(child: Text('Loading'))
-            : ListView.builder(
-                itemCount: siteContent.posts.length,
-                itemBuilder: (context, index) {
-                  return PostTile(post: siteContent.posts[index]);
-                },
-              );
+            : siteContent.posts.isNotEmpty
+                ? ListView.builder(
+                    itemCount: siteContent.posts.length,
+                    itemBuilder: (context, index) {
+                      return PostTile(post: siteContent.posts[index]);
+                    },
+                  )
+                : const Center(
+                    child: Text(
+                      'No Blog Posts',
+                      style: TextStyle(fontSize: 32),
+                    ),
+                  );
       },
     );
   }

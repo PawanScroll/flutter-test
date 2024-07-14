@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'package:stck_site/models/site.dart';
 import 'package:stck_site/store/search.dart';
+import 'package:stck_site/store/active_site.dart';
 import 'package:stck_site/scaffolds/base_scaffold.dart';
 
 class SearchPage extends StatefulWidget {
@@ -16,8 +18,10 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      body: ChangeNotifierProvider(
-        create: (context) => SearchStore(),
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => SearchStore()),
+        ],
         child: const SearchContainer(),
       ),
     );
@@ -34,8 +38,8 @@ class SearchContainer extends StatefulWidget {
 class _SearchContainerState extends State<SearchContainer> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<SearchStore>(
-      builder: (context, searchStore, child) {
+    return Consumer2<SearchStore, ActiveSite>(
+      builder: (context, searchStore, activeSite, child) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -55,7 +59,9 @@ class _SearchContainerState extends State<SearchContainer> {
             Padding(
               padding: const EdgeInsets.all(20),
               child: TextField(
-                onChanged: (value) => {searchStore.search(value)},
+                onChanged: (value) => {
+                  searchStore.search(value),
+                },
                 decoration: InputDecoration(
                   hintText: 'Search by username or their name',
                   prefixIcon: const Icon(Icons.search),
@@ -72,7 +78,15 @@ class _SearchContainerState extends State<SearchContainer> {
               child: ListView.builder(
                   itemCount: searchStore.sites.length,
                   itemBuilder: (context, index) {
-                    return SearchTile(site: searchStore.sites[index]);
+                    return GestureDetector(
+                      onTap: () async => {
+                        activeSite.setSite(searchStore.sites[index]),
+                        context.push('/site')
+                      },
+                      child: SearchTile(
+                        site: searchStore.sites[index],
+                      ),
+                    );
                   }),
             )
           ],
