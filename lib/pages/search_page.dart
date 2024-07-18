@@ -37,10 +37,10 @@ class SearchContainer extends StatefulWidget {
 
 class _SearchContainerState extends State<SearchContainer> {
   @override
-  void initState(){
+  void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<SearchStore>(context, listen: false).search('');
+      Provider.of<SearchStore>(context, listen: false).search('pawan');
     });
   }
 

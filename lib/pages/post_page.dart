@@ -5,6 +5,7 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 import 'package:stck_site/store/active_post.dart';
 import 'package:stck_site/scaffolds/base_scaffold.dart';
+import 'package:stck_site/components/posts/comments_below_post.dart';
 
 class PostPage extends StatefulWidget {
   final int? id;
@@ -53,8 +54,9 @@ class _PostContainerState extends State<PostContainer> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ActivePost>(context, listen: false)
-          .getPost(widget.siteId ?? 1, widget.id ?? 1);
+      final activePostStore = Provider.of<ActivePost>(context, listen: false);
+      activePostStore.getPost(widget.siteId ?? 1, widget.id ?? 1);
+      activePostStore.getComments(widget.siteId ?? 1, widget.id ?? 1);
     });
   }
 
@@ -62,53 +64,57 @@ class _PostContainerState extends State<PostContainer> {
   Widget build(BuildContext context) {
     return Consumer<ActivePost>(
       builder: (context, activePost, child) {
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              // Top section
-              const PostHeader(),
+        return ListView(
+          children: [
+            // Top section
+            const PostHeader(),
 
-              // Content section
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: HtmlWidget(
-                  activePost.post?.content ?? '',
-                ),
+            // Content section
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: HtmlWidget(
+                activePost.post?.content ?? '',
               ),
+            ),
 
-              // Bottom section
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.favorite_border),
-                        const SizedBox(width: 4),
-                        Text('${activePost.post?.likes ?? 0}'),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Icon(Icons.comment),
-                        const SizedBox(width: 4),
-                        Text('${activePost.post?.commentsCount ?? 0}'),
-                      ],
-                    ),
-                    const Row(
-                      children: [
-                        Icon(Icons.share),
-                        SizedBox(width: 4),
-                        Text('Share'),
-                      ],
-                    ),
-                    const Icon(Icons.more_vert),
-                  ],
-                ),
+            // Bottom section
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.favorite_border),
+                      const SizedBox(width: 4),
+                      Text('${activePost.post?.likes ?? 0}'),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Icon(Icons.comment),
+                      const SizedBox(width: 4),
+                      Text('${activePost.post?.commentsCount ?? 0}'),
+                    ],
+                  ),
+                  const Row(
+                    children: [
+                      Icon(Icons.share),
+                      SizedBox(width: 4),
+                      Text('Share'),
+                    ],
+                  ),
+                  const Icon(Icons.more_vert),
+                ],
               ),
-            ],
-          ),
+            ),
+
+            // Comments section
+            const Padding(
+              padding: EdgeInsets.all(20),
+              child: CommentsSection(),
+            ),
+          ],
         );
       },
     );

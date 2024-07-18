@@ -25,9 +25,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
             label: 'Back',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search_sharp),
-            label: 'Search'
-          )
+              icon: Icon(Icons.search_sharp), label: 'Search')
         ],
         onTap: (index) {
           switch (index) {
