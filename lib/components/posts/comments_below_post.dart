@@ -13,34 +13,54 @@ class CommentsSection extends StatelessWidget {
       builder: (context, activePost, child) {
         return Column(
           children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: activePost.comments.length,
-                itemBuilder: (context, index) {
-                  return CommentWidget(
-                    comment: activePost.comments[index],
-                  );
-                },
+            Container(
+              constraints: const BoxConstraints(
+                maxHeight: 300.0,
               ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Write a comment ...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
+              child: CustomScrollView(
+                slivers: [
+                  SliverPadding(
+                    padding: const EdgeInsets.all(8.0),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          if (index < activePost.comments.length) {
+                            return CommentWidget(
+                              comment: activePost.comments[index],
+                            );
+                          } else {
+                            return null;
+                          }
+                        },
+                        childCount: activePost.comments.length,
                       ),
                     ),
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: () {},
-                ),
-              ],
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Write a comment ...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      maxLines: 3,
+                      minLines: 1,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.send),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
             ),
           ],
         );
@@ -63,7 +83,7 @@ class CommentWidget extends StatelessWidget {
         children: [
           CircleAvatar(
             backgroundImage:
-                NetworkImage(comment.commenter.avatar.fallback ?? ''),
+                NetworkImage(comment.commenter.avatar?.fallback ?? ''),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -102,9 +122,10 @@ class CommentWidget extends StatelessWidget {
                   children: [
                     const Icon(Icons.reply, size: 16),
                     const SizedBox(width: 5),
-                    Text('Reply',
-                        style:
-                            TextStyle(color: Theme.of(context).primaryColor)),
+                    Text(
+                      'Reply',
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
                   ],
                 ),
               ],

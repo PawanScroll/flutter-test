@@ -1,73 +1,41 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
+
 import './site.dart';
 
-class Comment {
-  final int id;
-  final String created;
-  final int siteId;
-  final int postId;
-  final int? blockId;
-  final Commenter commenter;
-  final int commenterId;
-  final String content;
-  final int parentId;
-  final int status;
-  final List<Comment> replies;
+part 'comment.freezed.dart';
+part 'comment.g.dart';
 
-  Comment({
-    required this.id,
-    required this.created,
-    required this.siteId,
-    required this.postId,
-    required this.blockId,
-    required this.commenter,
-    required this.commenterId,
-    required this.content,
-    required this.parentId,
-    required this.status,
-    required this.replies,
-  });
+@freezed
+class Comment with _$Comment {
+  const factory Comment({
+    required int id,
+    required String created,
+    @JsonKey(name: 'site_id') required int siteId,
+    @JsonKey(name: 'post_id') required int postId,
+    @JsonKey(name: 'block_id') int? blockId,
+    required Commenter commenter,
+    @JsonKey(name: 'commenter_id') required int commenterId,
+    required String content,
+    @JsonKey(name: 'parent_id') int? parentId,
+    required int status,
+    List<Comment>? replies,
+  }) = _Comment;
 
-  factory Comment.fromJson(Map<String, dynamic> json) {
-    return Comment(
-      id: json['id'],
-      created: json['created'],
-      siteId: json['site_id'],
-      postId: json['post_id'],
-      blockId: json['block_id'],
-      commenter: Commenter.fromJson(json['commenter']),
-      commenterId: json['commenter_id'],
-      content: json['content'],
-      parentId: json['parent_id'],
-      status: json['status'],
-      replies: (json['replies'] as List<dynamic>)
-          .map((e) => Comment.fromJson(e))
-          .toList(),
-    );
-  }
+  factory Comment.fromJson(Map<String, Object?> json) =>
+      _$CommentFromJson(json);
 }
 
-class Commenter {
-  final int id;
-  final String name;
-  final String domain;
-  final List<String> tags;
-  final Avatar avatar;
+@freezed
+class Commenter with _$Commenter {
+  const factory Commenter({
+    required int id,
+    required String name,
+    Avatar? avatar,
+    String? domain,
+    List<String>? tags,
+  }) = _Commenter;
 
-  Commenter({
-    required this.id,
-    required this.name,
-    required this.domain,
-    required this.tags,
-    required this.avatar,
-  });
-
-  factory Commenter.fromJson(Map<String, dynamic> json) {
-    return Commenter(
-      id: json['id'],
-      name: json['name'],
-      domain: json['domain'],
-      tags: List<String>.from(json['tags']),
-      avatar: Avatar.fromJson(json['avatar']),
-    );
-  }
+  factory Commenter.fromJson(Map<String, Object?> json) =>
+      _$CommenterFromJson(json);
 }

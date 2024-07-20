@@ -158,7 +158,7 @@ class _PostHeaderState extends State<PostHeader> {
               ListTile(
                 leading: CircleAvatar(
                   backgroundImage: NetworkImage(
-                    activePost.post?.author.avatar['fallback'] ?? '',
+                    activePost.post?.author.avatar?.fallback ?? '',
                   ),
                 ),
                 title: Text(activePost.post?.author.name ?? ''),

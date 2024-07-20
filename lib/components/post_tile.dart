@@ -14,6 +14,10 @@ class PostTile extends StatefulWidget {
 class _PostTileState extends State<PostTile> {
   @override
   Widget build(BuildContext context) {
+    ImageSrc imageSrc = const ImageSrc();
+    if (widget.post.meta.cover.src is ImageSrc) {
+      imageSrc = widget.post.meta.cover.src as ImageSrc;
+    }
     return GestureDetector(
       onTap: () {
         context.push('/post/${widget.post.siteId}/${widget.post.id}');
@@ -33,12 +37,10 @@ class _PostTileState extends State<PostTile> {
                 ),
                 height: 350,
                 width: double.infinity,
-                child: widget.post.meta.cover.src?.fallback != null
+                child: widget.post.meta.cover.src is ImageSrc
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          widget.post.meta.cover.src?.fallback ?? '',
-                        ),
+                        child: Image.network(imageSrc.fallback ?? ''),
                       )
                     : const Text('no image'),
               ),
