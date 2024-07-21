@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 import 'package:stck_site/store/active_post.dart';
-import 'package:stck_site/scaffolds/base_scaffold.dart';
+import 'package:stck_site/scaffolds/post_scaffold.dart';
 import 'package:stck_site/components/posts/comments_below_post.dart';
 
 class PostPage extends StatefulWidget {
@@ -20,7 +20,9 @@ class PostPage extends StatefulWidget {
 class _PostPageState extends State<PostPage> {
   @override
   Widget build(BuildContext context) {
-    return BaseScaffold(
+    return PostScaffold(
+      sid: widget.siteId,
+      pid: widget.id,
       body: ChangeNotifierProvider(
         create: (context) => ActivePost(),
         child: Center(
@@ -56,7 +58,6 @@ class _PostContainerState extends State<PostContainer> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final activePostStore = Provider.of<ActivePost>(context, listen: false);
       activePostStore.getPost(widget.siteId ?? 1, widget.id ?? 1);
-      activePostStore.getComments(widget.siteId ?? 1, widget.id ?? 1);
     });
   }
 

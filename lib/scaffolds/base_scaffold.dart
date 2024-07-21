@@ -32,8 +32,8 @@ class _BaseScaffoldState extends State<BaseScaffold> {
             case 0:
               context.pop();
               break;
-            case 2:
-              context.push('/');
+            case 1:
+              context.push('/search');
               break;
           }
         },

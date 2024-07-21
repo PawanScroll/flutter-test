@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import 'package:stck_site/pages/site_page.dart';
 import 'package:stck_site/pages/home_page.dart';
 import 'package:stck_site/pages/post_page.dart';
 import 'package:stck_site/pages/search_page.dart';
@@ -14,7 +15,11 @@ void main() {
 final _router = GoRouter(
   routes: [
     GoRoute(
-      path: "/",
+      path: '/',
+      builder: (_, __) => const HomePage(),
+    ),
+    GoRoute(
+      path: "/search",
       builder: (_, __) => const SearchPage(),
     ),
     GoRoute(
@@ -27,7 +32,7 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: "/site",
-      builder: (_, __) => const MyHomePage(),
+      builder: (_, __) => const SitePage(),
     ),
   ],
 );
@@ -41,10 +46,6 @@ class MyApp extends StatelessWidget {
       create: (context) => ActiveSite(),
       child: MaterialApp.router(
         routerConfig: _router,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
       ),
     );
   }
