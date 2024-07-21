@@ -6,6 +6,7 @@ import 'package:stck_site/pages/site_page.dart';
 import 'package:stck_site/pages/home_page.dart';
 import 'package:stck_site/pages/post_page.dart';
 import 'package:stck_site/pages/search_page.dart';
+import 'package:stck_site/store/active_post.dart';
 import 'package:stck_site/store/active_site.dart';
 
 void main() {
@@ -42,10 +43,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ActiveSite(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ActiveSite()),
+        ChangeNotifierProvider(create: (context) => ActivePost()),
+      ],
       child: MaterialApp.router(
         routerConfig: _router,
+        theme: ThemeData(
+          fontFamily: 'IBMPlexSans'
+        ),
       ),
     );
   }

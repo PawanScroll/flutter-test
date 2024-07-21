@@ -23,19 +23,16 @@ class _PostPageState extends State<PostPage> {
     return PostScaffold(
       sid: widget.siteId,
       pid: widget.id,
-      body: ChangeNotifierProvider(
-        create: (context) => ActivePost(),
-        child: Center(
-          child: widget.id != null
-              ? PostContainer(
-                  id: widget.id,
-                  siteId: widget.siteId,
-                )
-              : const Text(
-                  '404',
-                  style: TextStyle(fontSize: 24),
-                ),
-        ),
+      body: Center(
+        child: widget.id != null
+            ? PostContainer(
+                id: widget.id,
+                siteId: widget.siteId,
+              )
+            : const Text(
+                '404',
+                style: TextStyle(fontSize: 24),
+              ),
       ),
     );
   }
@@ -75,6 +72,9 @@ class _PostContainerState extends State<PostContainer> {
               padding: const EdgeInsets.all(20),
               child: HtmlWidget(
                 activePost.post?.content ?? '',
+                textStyle: const TextStyle(
+                  fontSize: 20,
+                ),
               ),
             ),
 
