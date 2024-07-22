@@ -25,12 +25,19 @@ class _BaseScaffoldState extends State<BaseScaffold> {
             label: 'Back',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
               icon: Icon(Icons.search_sharp), label: 'Search')
         ],
         onTap: (index) {
           switch (index) {
             case 0:
               context.pop();
+              break;
+            case 1:
+              context.push('/profile');
               break;
             case 2:
               context.push('/');

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:stck_site/pages/home_page.dart';
 import 'package:stck_site/pages/post_page.dart';
 import 'package:stck_site/pages/search_page.dart';
+import 'package:stck_site/pages/profile_page.dart';
 import 'package:stck_site/store/active_site.dart';
 
 void main() {
@@ -18,12 +19,15 @@ final _router = GoRouter(
       builder: (_, __) => const SearchPage(),
     ),
     GoRoute(
+      path: "/profile",
+      builder: (_, __) => const MyProfilePage(),
+    ),
+    GoRoute(
       path: "/post/:siteId/:postId",
-      builder: (context, state) =>
-          PostPage(
-            id: int.parse(state.pathParameters['postId'] ?? ''),
-            siteId: int.parse(state.pathParameters['siteId'] ?? ''),
-            ),
+      builder: (context, state) => PostPage(
+        id: int.parse(state.pathParameters['postId'] ?? ''),
+        siteId: int.parse(state.pathParameters['siteId'] ?? ''),
+      ),
     ),
     GoRoute(
       path: "/site",
