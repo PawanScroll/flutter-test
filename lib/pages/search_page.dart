@@ -40,7 +40,7 @@ class _SearchContainerState extends State<SearchContainer> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<SearchStore>(context, listen: false).search('pawan');
+      Provider.of<SearchStore>(context, listen: false).search('');
     });
   }
 
