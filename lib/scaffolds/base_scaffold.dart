@@ -40,7 +40,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
               context.push('/profile');
               break;
             case 2:
-              context.push('/');
+              context.push('/search');
               break;
           }
         },
