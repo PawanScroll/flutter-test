@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stck_site/scaffolds/base_scaffold.dart';
 
 import 'package:stck_site/store/featured_posts.dart';
 import 'package:stck_site/models/post.dart';
@@ -14,7 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseScaffold(
       body: ChangeNotifierProvider(
           create: (context) => FeaturedPosts(), child: const ListContainer()),
     );
