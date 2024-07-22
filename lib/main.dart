@@ -6,11 +6,26 @@ import 'package:stck_site/pages/site_page.dart';
 import 'package:stck_site/pages/home_page.dart';
 import 'package:stck_site/pages/post_page.dart';
 import 'package:stck_site/pages/search_page.dart';
+import 'package:stck_site/pages/profile_page.dart';
 import 'package:stck_site/store/active_post.dart';
 import 'package:stck_site/store/active_site.dart';
+import 'package:stck_site/store/user_content.dart';
+import 'package:stck_site/utils/apiclient.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeSession();
+  final authStore = AuthStore();
+  await authStore.fetchAndSetUser();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: authStore),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 final _router = GoRouter(
@@ -24,12 +39,15 @@ final _router = GoRouter(
       builder: (_, __) => const SearchPage(),
     ),
     GoRoute(
+      path: "/profile",
+      builder: (_, __) => const MyProfilePage(),
+    ),
+    GoRoute(
       path: "/post/:siteId/:postId",
-      builder: (context, state) =>
-          PostPage(
-            id: int.parse(state.pathParameters['postId'] ?? ''),
-            siteId: int.parse(state.pathParameters['siteId'] ?? ''),
-            ),
+      builder: (context, state) => PostPage(
+        id: int.parse(state.pathParameters['postId'] ?? ''),
+        siteId: int.parse(state.pathParameters['siteId'] ?? ''),
+      ),
     ),
     GoRoute(
       path: "/site",

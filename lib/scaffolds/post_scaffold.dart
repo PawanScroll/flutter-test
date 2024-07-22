@@ -84,7 +84,7 @@ class _CommentsEngagementBarState extends State<CommentsEngagementBar> {
           return const SizedBox();
         }
 
-        return Container(
+        return SizedBox(
           height: 60,
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
