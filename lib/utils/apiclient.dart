@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:stck_site/utils/cookie.dart';
+import 'package:stck_site/utils/constants.dart';
 
-final Dio dio = Dio();
+BaseOptions options = BaseOptions(baseUrl: baseApi);
+
+final Dio dio = Dio(options);
 
 Future<void> initializeSession() async {
   final sessionCookie = await CookieManager.getCookie('session');

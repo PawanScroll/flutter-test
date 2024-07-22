@@ -33,7 +33,7 @@ class AuthStore extends ChangeNotifier {
 
     try {
       final response = await dio.post(
-        'https://api.stck.me/api/w/signin',
+        '/api/w/signin',
         data: {
           'email': email,
           'password': password,
@@ -67,7 +67,7 @@ class AuthStore extends ChangeNotifier {
         return;
       }
       // Make the API call to fetch user data
-      final response = await dio.get('https://api.stck.me/api/w/sites/326/me');
+      final response = await dio.get('/api/w/sites/326/me');
       if (response.statusCode == 200) {
         final User user = User.fromJson(response.data);
         setUser(user);
